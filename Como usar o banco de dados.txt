@@ -1,0 +1,117 @@
+Preparação do ambiente para instalação do banco de Dados
+1) Instale o Node.js: https://nodejs.org/ (versão LTS recomendada)
+2) Instale o PostgreSQL: https://www.postgresql.org/download/
+
+Configuração do banco de dados:
+1) Abra o pgAdmin4
+2) Crie um novo banco de dados chamado 'Delicias_Budi' (ou o nome que você escolheu)
+3) Conecte-se ao banco de dados e execute o script SQL para criar as tabelas e funções (Copiar esse código inteiro até "$$ LANGUAGE plpgsql;")
+
+-- Tabela de estoque de produtos prontos para venda
+CREATE TABLE pronta_entrega (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    quantidade INTEGER NOT NULL,
+    preco DECIMAL(10, 2) NOT NULL,
+    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de estoque de materiais
+CREATE TABLE estoque_materiais (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    quantidade INTEGER NOT NULL,
+    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de pedidos de clientes
+CREATE TABLE pedidos_clientes (
+    id SERIAL PRIMARY KEY,
+    nome_cliente VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    descricao_pedido TEXT NOT NULL,
+    preco DECIMAL(10, 2) NOT NULL,
+    prazo_entrega VARCHAR(10) NOT NULL,
+    data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Funções para adicionar e remover itens da tabela pronta_entrega
+CREATE OR REPLACE FUNCTION adicionar_produto_pronta_entrega(
+    p_nome VARCHAR(100),
+    p_quantidade INTEGER,
+    p_preco DECIMAL(10, 2)
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO pronta_entrega (nome, quantidade, preco)
+    VALUES (p_nome, p_quantidade, p_preco);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION remover_produto_pronta_entrega(
+    p_id INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM pronta_entrega WHERE id = p_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Funções para adicionar e remover itens da tabela estoque_materiais
+CREATE OR REPLACE FUNCTION adicionar_material(
+    p_nome VARCHAR(100),
+    p_quantidade INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO estoque_materiais (nome, quantidade)
+    VALUES (p_nome, p_quantidade);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION remover_material(
+    p_id INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM estoque_materiais WHERE id = p_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Função para remover pedidos antigos
+CREATE OR REPLACE FUNCTION remover_pedido_antigo(
+    p_id INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM pedidos_clientes WHERE id = p_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+Transferência de arquivos:
+1)Copie todos os arquivos do projeto para a nova máquina.
+
+Instalação de dependências: 
+1) Abra um terminal na pasta do projeto usando o comando "cd C:\Users\Bernardo\Desktop\Projeto-budi"
+(O C:\Users\Bernardo\Desktop\Projeto-budi é um exemplo)
+2) Execute: npm install
+
+Configuração do servidor (SE NECESSARIO pois os dados são praticamente os padrões do pgAdmin4):
+1) Abra o arquivo server.js
+2) Atualize as configurações de conexão do banco de dados na seguinte parte:
+user:seu usuario do pgAdmin4 (postgres é o padrão / database: O nome que você deu a seu banco de dados / 
+password: A senha que você usa para acessar o banco. /  port: 5432 é o padrao que vem no pgAdmin4
+
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'Delicias_Budi',
+  password: 'sua_senha',
+  port: 5432,
+});
+
+Iniciar o servidor:
+1)No terminal, na pasta do projeto (cd C:\Users\Bernardo\Desktop\Projeto-budi), execute: node server.js
+
+Acesso ao sistema:
+1)Abra seu navegador e acesse: http://localhost:3000 (ou a porta que você configurou, que deve se encontrar acima da linha
+de codigos que configuraram o servidor na etapa de "Configuração do Servidor", deve ser algo como: 
+const app = express();
+const port = 3000;
+dai aqui identificamos o port 3000 do localhost)

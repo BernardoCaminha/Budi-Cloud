@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos de Clientes - Budi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Pedidos de Clientes</h1>
+    <button onclick="location.href='index.html'">Voltar</button>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome do Cliente</th>
+                <th>Telefone</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Prazo de Entrega</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        fetch('/api/pedidos_clientes')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#dataTable tbody');
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.id}</td>
+                        <td>${item.nome_cliente}</td>
+                        <td>${item.telefone}</td>
+                        <td>${item.descricao_pedido}</td>
+                        <td>${item.preco}</td>
+                        <td>${item.prazo_entrega}</td>
+                    `;
+                   tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Erro:', error));
+    </script>
+</body>
+</html>

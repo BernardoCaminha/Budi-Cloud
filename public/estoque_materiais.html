@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque de Materiais - Budi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Estoque de Materiais</h1>
+    <button onclick="location.href='index.html'">Voltar</button>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        fetch('/api/estoque_materiais')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#dataTable tbody');
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.id}</td>
+                        <td>${item.nome}</td>
+                        <td>${item.quantidade}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Erro:', error));
+    </script>
+</body>
+</html>

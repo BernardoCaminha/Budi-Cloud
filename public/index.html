@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budi - Doceria</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Budi - Doceria</h1>
+    <div class="button-container">
+        <button onclick="location.href='pronta_entrega.html'">Pronta Entrega</button>
+        <button onclick="location.href='estoque_materiais.html'">Estoque de Materiais</button>
+        <button onclick="location.href='pedidos_clientes.html'">Pedidos de Clientes</button>
+    </div>
+    <div class="form-container">
+        <h2>Adicionar/Remover Itens</h2>
+        <button onclick="toggleForm('prontaEntrega')">Adicionar/Remover Pronta Entrega</button>
+        <button onclick="toggleForm('material')">Adicionar/Remover Material</button>
+        <button onclick="toggleForm('pedido')">Adicionar/Remover Pedido</button>
+        
+        <form id="prontaEntregaForm" style="display:none;">
+            <h3>Pronta Entrega</h3>
+            <input type="text" id="peName" placeholder="Nome do produto">
+            <input type="number" id="peQuantidade" placeholder="Quantidade">
+            <input type="number" id="pePreco" placeholder="Preço" step="0.01">
+            <button type="button" onclick="adicionarProntaEntrega()">Adicionar</button>
+            <input type="number" id="peId" placeholder="ID para remover">
+            <button type="button" onclick="removerProntaEntrega()">Remover</button>
+        </form>
+
+        <form id="materialForm" style="display:none;">
+            <h3>Material</h3>
+            <input type="text" id="matNome" placeholder="Nome do material">
+            <input type="number" id="matQuantidade" placeholder="Quantidade">
+            <button type="button" onclick="adicionarMaterial()">Adicionar</button>
+            <input type="number" id="matId" placeholder="ID para remover">
+            <button type="button" onclick="removerMaterial()">Remover</button>
+        </form>
+
+        <form id="pedidoForm" style="display:none;">
+            <h3>Pedido</h3>
+            <input type="text" id="pedNome" placeholder="Nome do cliente">
+            <input type="tel" id="pedTelefone" placeholder="Telefone">
+            <textarea id="pedDescricao" placeholder="Descrição do pedido"></textarea>
+            <input type="number" id="pedPreco" placeholder="Preço" step="0.01">
+            <input type="text" id="pedPrazo" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}" required>
+            <button type="button" onclick="adicionarPedido()">Adicionar</button>
+            <input type="number" id="pedId" placeholder="ID para remover">
+            <button type="button" onclick="removerPedido()">Remover</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
